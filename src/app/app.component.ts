@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
-
-import { HomePage } from '../pages/home/home';
+import {Component} from "@angular/core";
+import {Platform} from "ionic-angular";
+import {StatusBar, Splashscreen} from "ionic-native";
 
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  styleUrls: ['/src/app/app.scss']
 })
 export class MyApp {
-  rootPage = HomePage;
+
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
