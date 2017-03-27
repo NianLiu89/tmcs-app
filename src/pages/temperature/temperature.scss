@@ -2,6 +2,11 @@ page-temperature {
     #canvas {
         height: 100%;
     }
+    #canvas svg {
+        height: 100%;
+        width: 100%;
+        border: 2px solid black;
+    }
     .line {
         fill: none;
         stroke: #ffffff;
@@ -13,15 +18,15 @@ page-temperature {
         font-weight: bold;
     }
     // axis
-    .axis text{
+    .axis text {
         fill: #ffffff;
         font-weight: bold;
         font-style: italic;
         font-size: 12px;
     }
-
     .tick line {
         stroke: #ffffff;
+        stroke-dasharray: 5, 5;
     }
     .tick text {
         font-size: 14px;

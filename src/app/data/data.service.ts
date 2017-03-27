@@ -6,13 +6,9 @@ import { Observable } from "rxjs/Rx";
 export class DataService implements OnInit {
 
     constructor() {
-
     }
 
     ngOnInit(): void {
-        console.log("I'm in data service!");
-        let timer = Observable.timer(2000, 1000);
-        timer.subscribe(t => console.log(t));
     }
 
     public getData(): DataPoint[] {
