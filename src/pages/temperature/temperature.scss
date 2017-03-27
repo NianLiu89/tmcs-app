@@ -1,11 +1,29 @@
 page-temperature {
     #canvas {
-        height:100%;
+        height: 100%;
     }
-
     .line {
         fill: none;
-        stroke: black;
+        stroke: #ffffff;
         stroke-width: 3px;
+    }
+    .text {
+        fill: #ffffff;
+        font-size: 15px;
+        font-weight: bold;
+    }
+    // axis
+    .axis text{
+        fill: #ffffff;
+        font-weight: bold;
+        font-style: italic;
+        font-size: 12px;
+    }
+
+    .tick line {
+        stroke: #ffffff;
+    }
+    .tick text {
+        font-size: 14px;
     }
 }
