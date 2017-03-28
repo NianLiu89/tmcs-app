@@ -1,27 +1,30 @@
 import * as d3 from "d3";
 import { DataPoint } from "../../app/data/datapoint";
 import * as $ from "jquery";
-import { OnInit } from "@angular/core";
+import { Margin } from "../shared/margin";
 
-export class TemperatureChart implements OnInit {
-    private margin = { left: 30, right: 30, top: 40, bottom: 55 };
-
-    private maximum: number;
-    private canvasId: string;
+export class TemperatureChart {
+    private margin: Margin;          // 边框距离， 上下左右的边距
+    private maxValueInData: number;  // 测点数据中的温度上限
+    private canvasId: string;        // 图形生成于id为这个变量值的DOM中
     private canvas = () => { return document.getElementById(this.canvasId); };
+    // private svg = () => { return d3.select(this.canvas()).select("svg").select("g"); };
+    private width = () => { return $(window).width() - this.margin.left - this.margin.right; };
+    private height = () => { return $(window).height() - this.margin.top - this.margin.bottom; };
 
-    constructor(canvasId: string, maximum: number) {
+    constructor(canvasId: string, maxValueInData: number, margin: Margin) {
         this.canvasId = canvasId;
-        this.maximum = maximum;
-    }
-
-    ngOnInit(): void {
+        this.maxValueInData = maxValueInData;
+        this.margin = margin;
     }
 
     public draw(data: DataPoint[]): void {
+        // wipe out existing graphs
+        d3.select(this.canvas()).select("svg").remove();
 
         // if is first time draw the chart
         if (d3.select(this.canvas()).select("svg").empty()) {
+            // initialize all components
             d3.select(this.canvas())
                 .append("svg")
                 .append("g")
@@ -31,28 +34,16 @@ export class TemperatureChart implements OnInit {
                 ;
         }
 
-        let svg = d3.select(this.canvas()).select("svg").select("g"),
-            // width = this.canvas.clientWidth - this.margin.left - this.margin.right,
-            width = $(window).width() - this.margin.left - this.margin.right,
-            height = $(window).height() - this.margin.top - this.margin.bottom;
-        // height = this.canvas.clientHeight - this.margin.top - this.margin.bottom;
-
-        let x = this.xScale(width, data);
-        let y = this.yScale(height, this.maximum);
-
-        // draw line
-        let lines = d3.line()
-            .x(function (data, index) { return x(index + 1) })
-            .y(function (d) { return y(d.temperature) });
-
-        svg.select("path")
-            .attr("d", lines(data))
-            .style("border", "1px solid black");
+        let svg = d3.select(this.canvas()).select("svg").select("g");
+        let x = this.xScale(this.width(), data);
+        let y = this.yScale(this.height(), this.maxValueInData);
 
         // draw y axis
         svg.append("g")
             .attr("class", "axis axis-y")
-            .call(d3.axisRight(y).ticks(5).tickSize(width))
+            .call(d3.axisRight(y)
+                .ticks(5)
+                .tickSize(this.width()))
             .append("text")
             .text("温度 (℃)")
             .attr("y", -this.margin.top * 0.5)
@@ -62,36 +53,34 @@ export class TemperatureChart implements OnInit {
         svg.append("g")
             .attr("class", "axis axis-x")
             .call(d3.axisBottom(x)
-                .tickSize(height)
+                .tickSize(this.height())
                 .tickValues(d3.range(1, data.length + 1))
-                .tickFormat(d3.format("d"))  // digit
-            )
+                .tickFormat(d3.format("d")))
             .append("text")
             .text("车位")
-            .attr("transform", "translate(" + width + "," + (height + this.margin.bottom * 0.7) + ")")
+            .attr("transform", "translate(" + this.width() + "," + (this.height() + this.margin.bottom * 0.7) + ")")
             ;
 
         // style axes
         svg.selectAll(".domain").remove();
         svg.selectAll(".axis-y .tick text").attr("x", - (this.margin.left - 5));
         svg.selectAll(".axis-x .tick text").attr("dy", 20);
+
+        // rander line
+        this.update(data);
     }
 
     public update(data: DataPoint[]): void {
-        let svg = d3.select(this.canvas()).transition();
-
-        let width = $(window).width() - this.margin.left - this.margin.right,
-            height = $(window).height() - this.margin.top - this.margin.bottom;
-
-        let x = this.xScale(width, data);
-        let y = this.yScale(height, this.maximum);
+        let x = this.xScale(this.width(), data);
+        let y = this.yScale(this.height(), this.maxValueInData);
 
         // draw line
         let lines = d3.line()
             .x(function (data, index) { return x(index + 1) })
             .y(function (d) { return y(d.temperature) });
 
-        svg.select(".line")
+        d3.select(".line")
+            .transition()
             .duration(250)
             .attr("d", lines(data));
     }
@@ -105,7 +94,6 @@ export class TemperatureChart implements OnInit {
     private yScale(height: number, maximum: number): any {
         return d3.scaleLinear()
             .range([height, 0])
-            .domain([0, maximum]) //暂时设置温度上限为200度
-            ;
+            .domain([0, maximum]);
     }
 }
