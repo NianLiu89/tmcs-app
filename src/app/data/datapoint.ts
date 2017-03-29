@@ -2,7 +2,7 @@ export class DataPoint {
     // code: string;
     // kiln: string; 
     // slot: number;  // 车位
-    position: string    ;
+    position: string;
     // maxTemperature: number;
     // minTemperature: number;
     temperature: number; // 温度

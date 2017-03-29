@@ -35,8 +35,24 @@ export class TemperatureChart {
         }
 
         let svg = d3.select(this.canvas()).select("svg").select("g");
-        let x = this.xScale(this.width(), data);
+        // let x = this.xScale(this.width(), data);
+        let x = d3.scaleBand()
+            .range([0, this.width()])
+            .domain(data.map(function (d) { return d.position; }));
         let y = this.yScale(this.height(), this.maxValueInData);
+
+        // draw x axis
+        svg.append("g")
+            .attr("class", "axis axis-x")
+            .call(
+            d3.axisBottom(x)
+                .tickSize(this.height())
+            // .tickValues(d3.range(data.length)) // for linear scale
+            )
+            .append("text")
+            .text("车位")
+            .attr("transform", "translate(" + this.width() + "," + (this.height() + this.margin.bottom * 0.7) + ")")
+            ;
 
         // draw y axis
         svg.append("g")
@@ -47,18 +63,6 @@ export class TemperatureChart {
             .append("text")
             .text("温度 (℃)")
             .attr("y", -this.margin.top * 0.5)
-            ;
-
-        // draw x axis
-        svg.append("g")
-            .attr("class", "axis axis-x")
-            .call(d3.axisBottom(x)
-                .tickSize(this.height())
-                .tickValues(d3.range(1, data.length + 1))
-                .tickFormat(d3.format("d")))
-            .append("text")
-            .text("车位")
-            .attr("transform", "translate(" + this.width() + "," + (this.height() + this.margin.bottom * 0.7) + ")")
             ;
 
         // style axes
@@ -72,11 +76,12 @@ export class TemperatureChart {
 
     public update(data: DataPoint[]): void {
         let x = this.xScale(this.width(), data);
+        // let x = this.xBandScale(this.width(), data);
         let y = this.yScale(this.height(), this.maxValueInData);
 
-        // draw line
+        // line generator
         let lines = d3.line()
-            .x(function (data, index) { return x(index + 1) })
+            .x(function (data, index) { return x(index) })
             .y(function (d) { return y(d.temperature) });
 
         d3.select(".line")
@@ -86,14 +91,22 @@ export class TemperatureChart {
     }
 
     private xScale(width: number, data: DataPoint[]): any {
+        console.log(d3.range(data.length));
         return d3.scaleLinear()
             .range([0, width])
-            .domain(d3.extent(data, function (data, index) { return index + 1 }));
+            .domain([0, data.length - 1]);
     }
 
     private yScale(height: number, maximum: number): any {
         return d3.scaleLinear()
             .range([height, 0])
             .domain([0, maximum]);
+    }
+
+    private xBandScale(width: number, data: DataPoint[]): any {
+        console.log(d3.range(data.length));
+        return d3.scaleBand()
+            .range([0, width])
+            .domain(d3.range(data.length));
     }
 }

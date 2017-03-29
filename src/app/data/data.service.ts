@@ -20,17 +20,17 @@ export class DataService implements OnInit {
             this.aRandomDataPoint("TA4_BM"),
             this.aRandomDataPoint("TA5_BM"),
             this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM"),
-            this.aRandomDataPoint("TA6_BM")
+            this.aRandomDataPoint("TA7_BM"),
+            this.aRandomDataPoint("TA8_BM"),
+            this.aRandomDataPoint("TA9_BM"),
+            this.aRandomDataPoint("TA10_BM"),
+            this.aRandomDataPoint("TA11_BM"),
+            this.aRandomDataPoint("TA12_BM"),
+            this.aRandomDataPoint("TA13_BM"),
+            this.aRandomDataPoint("TA14_BM"),
+            this.aRandomDataPoint("TA15_BM"),
+            this.aRandomDataPoint("TA16_BM"),
+            this.aRandomDataPoint("TA17_BM")
         ];
     }
 
