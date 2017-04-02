@@ -98,7 +98,6 @@ export class TemperatureChart {
     }
 
     private xLinearScale(width: number, data: DataPoint[]): any {
-        console.log(d3.range(data.length));
         return d3.scaleLinear()
             .range([0, width])
             .domain([0, data.length - 1]);

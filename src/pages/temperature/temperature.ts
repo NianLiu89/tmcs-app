@@ -6,6 +6,7 @@ import { Observable } from "rxjs/Rx";
 import { DataPoint } from "../../app/data/datapoint";
 import { TemperatureChart } from "./temperature.chart";
 import { Margin } from "../shared/margin";
+import { DummyDataService } from "../../app/data/dummy.data.service";
 // import $ from "jquery";
 
 @Component({
@@ -16,11 +17,12 @@ import { Margin } from "../shared/margin";
 export class TemperaturePage implements OnInit {
   private canvasId = "canvas";
   private margin: Margin = { left: 30, right: 30, top: 40, bottom: 55 };
-  private data: DataPoint[] = this.dataService.getData();
+  // private data: DataPoint[] = this.dataService.getData();
+  private data: DataPoint[] = this.dummyDataService.getDummyData();
   private maximum: number = 200;
 
   private chart: TemperatureChart;
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private dummyDataService: DummyDataService) {
     // HTMLs defined in the template are not ready in this phase.
     this.chart = new TemperatureChart(this.canvasId, this.maximum, this.margin);
   }
@@ -28,7 +30,8 @@ export class TemperaturePage implements OnInit {
   ngOnInit(): void {
     let timer = Observable.timer(2000, 1000);
     timer.subscribe(t => {
-      this.data = this.dataService.getData();
+      this.data = this.dummyDataService.getDummyData();
+      // this.data = this.dataService.getData();
       this.chart.update(this.data);
     });
 

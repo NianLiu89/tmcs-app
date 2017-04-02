@@ -4,6 +4,7 @@ import {MyApp} from "./app.component";
 import {TemperaturePage} from "../pages/temperature/temperature";
 import { AboutPage } from "../pages/about/about";
 import { DataService } from "./data/data.service";
+import { DummyDataService } from "./data/dummy.data.service";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { DataService } from "./data/data.service";
     TemperaturePage,
     AboutPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, DataService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, DataService, DummyDataService]
 })
 export class AppModule {
 }
