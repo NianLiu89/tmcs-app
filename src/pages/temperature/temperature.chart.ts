@@ -35,10 +35,15 @@ export class TemperatureChart {
         }
 
         let svg = d3.select(this.canvas()).select("svg").select("g");
-        // let x = this.xScale(this.width(), data);
-        let x = d3.scaleBand()
-            .range([0, this.width()])
-            .domain(data.map(function (d) { return d.position; }));
+        let x = this.xLinearScale(this.width(), data); // [linear scale]
+        // let x = this.xBandScale(this.width(), data) // [band scale]
+        // .domain(data.map(function (d) {
+        // let regex = /^(.*)_(.*)$/gi; // modifier gi:  g means global search, i means case insensitive
+        // let result = regex.exec(d.position);
+        // return result[1];
+        // }))
+        ;
+
         let y = this.yScale(this.height(), this.maxValueInData);
 
         // draw x axis
@@ -47,7 +52,7 @@ export class TemperatureChart {
             .call(
             d3.axisBottom(x)
                 .tickSize(this.height())
-            // .tickValues(d3.range(data.length)) // for linear scale
+                .tickValues(d3.range(data.length)) // [linear scale]
             )
             .append("text")
             .text("车位")
@@ -75,13 +80,15 @@ export class TemperatureChart {
     }
 
     public update(data: DataPoint[]): void {
-        let x = this.xScale(this.width(), data);
-        // let x = this.xBandScale(this.width(), data);
+        let x = this.xLinearScale(this.width(), data); // [linear scale]
+        // let x = this.xBandScale(this.width(), data) // [band scale]
+        // .domain(data.map(function (d) { return d.position; }));
         let y = this.yScale(this.height(), this.maxValueInData);
 
         // line generator
         let lines = d3.line()
-            .x(function (data, index) { return x(index) })
+            .x(function (d, i) { return x(i); }) // [linear scale] need to add half band width to move the point to the middle
+            // .x(function (d) { return x(d.position) + x.bandwidth() / 2 }) // [band scale] need to add half band width to move the point to the middle
             .y(function (d) { return y(d.temperature) });
 
         d3.select(".line")
@@ -90,11 +97,16 @@ export class TemperatureChart {
             .attr("d", lines(data));
     }
 
-    private xScale(width: number, data: DataPoint[]): any {
+    private xLinearScale(width: number, data: DataPoint[]): any {
         console.log(d3.range(data.length));
         return d3.scaleLinear()
             .range([0, width])
             .domain([0, data.length - 1]);
+    }
+
+    private xBandScale(width: number, data: DataPoint[]): any {
+        return d3.scaleBand()
+            .range([0, width]);
     }
 
     private yScale(height: number, maximum: number): any {
@@ -103,10 +115,4 @@ export class TemperatureChart {
             .domain([0, maximum]);
     }
 
-    private xBandScale(width: number, data: DataPoint[]): any {
-        console.log(d3.range(data.length));
-        return d3.scaleBand()
-            .range([0, width])
-            .domain(d3.range(data.length));
-    }
 }
