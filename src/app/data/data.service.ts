@@ -6,14 +6,17 @@ import { Observable } from "rxjs/Rx";
 @Injectable()
 export class DataService implements OnInit {
 
-    private url: string = "http://192.168.2.1:8080/datapoints";
-
+    // private url: string = "http://192.168.2.1:8080/datapoints";
+    private url: string = "http://localhost:8080/datapoints";
+    private data: any;
     constructor(private http: Http) {
         console.log("DataService constructor");
         let timer = Observable.timer(0, 5000);
         timer.subscribe(() => {
-            this.getData();
         })
+
+        this.getData();
+
     }
 
     ngOnInit(): void {
@@ -23,9 +26,11 @@ export class DataService implements OnInit {
 
     public getData(): void {
         this.http.get(this.url)
-            // .map((d, i) => { console.log(d); console.log(i); return d.json })
+            .map(response => { console.log(response) })
+            .subscribe(
+            result => { console.log(result); this.data = result }
+            )
             ;
-        return null;
     }
 
 }

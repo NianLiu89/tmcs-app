@@ -1,10 +1,11 @@
-import {NgModule, ErrorHandler} from "@angular/core";
-import {IonicApp, IonicModule, IonicErrorHandler} from "ionic-angular";
-import {MyApp} from "./app.component";
-import {TemperaturePage} from "../pages/temperature/temperature";
+import { NgModule, ErrorHandler } from "@angular/core";
+import { IonicApp, IonicModule, IonicErrorHandler } from "ionic-angular";
+import { MyApp } from "./app.component";
+import { TemperaturePage } from "../pages/temperature/temperature";
 import { AboutPage } from "../pages/about/about";
 import { DataService } from "./data/data.service";
 import { DummyDataService } from "./data/dummy.data.service";
+import { HttpModule } from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,8 @@ import { DummyDataService } from "./data/dummy.data.service";
   ],
   imports: [
     IonicModule.forRoot(MyApp)
+    // ,
+    // HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -21,7 +24,7 @@ import { DummyDataService } from "./data/dummy.data.service";
     TemperaturePage,
     AboutPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, DataService, DummyDataService]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, DataService, DummyDataService]
 })
 export class AppModule {
 }
