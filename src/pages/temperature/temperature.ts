@@ -19,6 +19,7 @@ export class TemperaturePage implements OnInit {
   private data: DataPoint[] = this.dataService.getData();
   private maximum: number = 200;
 
+
   private chart: TemperatureChart;
   constructor(private dataService: DataService) {
     // HTMLs defined in the template are not ready in this phase.
