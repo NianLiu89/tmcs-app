@@ -33,7 +33,7 @@ export class TemperaturePage implements OnInit {
       this.chart.update(this.data);
     });
 
-    console.log(this.data);
+    // console.log(this.data);
     this.chart.draw(this.data);
     window.addEventListener("resize", () => { this.chart.draw(this.data) });
   }
