@@ -21,6 +21,7 @@ export class TemperaturePage implements OnInit {
   private data: DataPoint[] = this.dummyDataService.getDummyData();
   private maximum: number = 200;
 
+
   private chart: TemperatureChart;
   constructor(private dataService: DataService, private dummyDataService: DummyDataService) {
     // HTMLs defined in the template are not ready in this phase.
@@ -35,7 +36,7 @@ export class TemperaturePage implements OnInit {
       this.chart.update(this.data);
     });
 
-    console.log(this.data);
+    // console.log(this.data);
     this.chart.draw(this.data);
     window.addEventListener("resize", () => { this.chart.draw(this.data) });
   }
