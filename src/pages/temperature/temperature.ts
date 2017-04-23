@@ -7,7 +7,6 @@ import { DataPoint } from "../../app/data/datapoint";
 import { TemperatureChart } from "./temperature.chart";
 import { Margin } from "../shared/margin";
 import { DummyDataService } from "../../app/data/dummy.data.service";
-// import $ from "jquery";
 
 @Component({
   selector: 'page-temperature',
