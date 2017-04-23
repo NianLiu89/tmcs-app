@@ -1,11 +1,25 @@
 export class DataPoint {
-    // code: string;
+    private code: string;
     // kiln: string; 
     // slot: number;  // 车位
-    position: string;
+    // position: string;
     // maxTemperature: number;
     // minTemperature: number;
-    temperature: number; // 温度
+    private temperature: number; // 温度
     // moduleId: number;
     // channelId: number;
+
+    public constructor(code: string, temperature: number) {
+        this.code = code;
+        this.temperature = temperature;
+    }
+
+    public getCode(): string {
+        return this.code;
+    }
+
+    public getTemperature(): number {
+        return this.temperature;
+    }
+
 }

@@ -17,7 +17,9 @@ export class TemperaturePage implements OnInit {
   private canvasId = "canvas";
   private margin: Margin = { left: 30, right: 30, top: 40, bottom: 55 };
   // private data: DataPoint[] = this.dataService.getData();
-  private data: DataPoint[] = this.dummyDataService.getDummyData();
+  // private data: DataPoint[] = this.dummyDataService.getDummyData();
+  private data: DataPoint[] = [];
+  private lastDataSize: number = 0;
   private maximum: number = 200;
 
 
@@ -25,18 +27,24 @@ export class TemperaturePage implements OnInit {
   constructor(private dataService: DataService, private dummyDataService: DummyDataService) {
     // HTMLs defined in the template are not ready in this phase.
     this.chart = new TemperatureChart(this.canvasId, this.maximum, this.margin);
+
   }
 
   ngOnInit(): void {
     let timer = Observable.timer(2000, 1000);
     timer.subscribe(t => {
-      this.data = this.dummyDataService.getDummyData();
-      // this.data = this.dataService.getData();
-      this.chart.update(this.data);
+      this.data = this.dataService.getRealData();
+      // this.data = this.dummyDataService.getDummyData();
+      if (this.lastDataSize != this.data.length) {
+        console.log('this is a redrawing');
+        this.chart.draw(this.data)
+        this.lastDataSize = this.data.length;
+      } else {
+        console.log('this is an updateing');
+        this.chart.update(this.data);
+      }
     });
 
-    // console.log(this.data);
-    this.chart.draw(this.data);
     window.addEventListener("resize", () => { this.chart.draw(this.data) });
   }
 }

@@ -28,8 +28,8 @@ export class DummyDataService {
         ];
     }
 
-    private aRandomDataPoint(position: string): DataPoint {
-        return { position: position, temperature: this.aRandomNumber(1, 200) };
+    private aRandomDataPoint(code: string): DataPoint {
+        return new DataPoint(code, this.aRandomNumber(1, 200))
     }
 
     private aRandomNumber(min: number, max: number): number {

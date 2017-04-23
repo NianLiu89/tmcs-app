@@ -87,9 +87,9 @@ export class TemperatureChart {
 
         // line generator
         let lines = d3.line()
-            .x(function (d, i) { return x(i); }) // [linear scale] need to add half band width to move the point to the middle
+            .x(function (d: DataPoint, i) { return x(i); }) // [linear scale] need to add half band width to move the point to the middle
             // .x(function (d) { return x(d.position) + x.bandwidth() / 2 }) // [band scale] need to add half band width to move the point to the middle
-            .y(function (d) { return y(d.temperature) });
+            .y(function (d: DataPoint) { return y(d.getTemperature()) });
 
         d3.select(".line")
             .transition()
