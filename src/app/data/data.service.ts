@@ -6,28 +6,17 @@ import { Observable } from "rxjs/Rx";
 @Injectable()
 export class DataService {
 
-    // private url: string = "http://192.168.2.1:8080/datapoints";
-    private url: string = "http://localhost:8080/datapoints";
-    private data: DataPoint[];
+    private url: string = "http://192.168.2.6:8080/datapoints";
+    // private url: string = "http://localhost:8080/datapoints";
 
     constructor(private http: Http) {
-        console.log("Preparing Data...");
-
-        let timer = Observable.timer(0, 5000);
-        timer.subscribe(() => {
-            this.getTemperatureData()
-                .subscribe((data: DataPoint[]) => this.data = data)
-                ;
-        })
-
     }
 
-    public getRealData(): DataPoint[] {
-        return this.data;
-    }
-
-    private getTemperatureData(): Observable<DataPoint[]> {
-        return this.http.get(this.url)
+    public getDataObserable(): Observable<DataPoint[]> {
+        return Observable.interval(2000)
+            .flatMap(() => this.http.get(this.url))
+            .retryWhen(e => e.delay(1000)) // retry after 1 sec
+            .share() // hot observable
             .map(this.extractDataPoints)
             .catch(this.handleError);
     }

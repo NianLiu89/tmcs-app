@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { Slides } from 'ionic-angular';
 import * as d3 from "d3";
 import * as $ from "jquery";
 import { DataService } from "../../app/data/data.service";
@@ -22,29 +23,35 @@ export class TemperaturePage implements OnInit {
   private lastDataSize: number = 0;
   private maximum: number = 200;
 
+  @ViewChild(Slides) slides: Slides;
 
   private chart: TemperatureChart;
   constructor(private dataService: DataService, private dummyDataService: DummyDataService) {
     // HTMLs defined in the template are not ready in this phase.
     this.chart = new TemperatureChart(this.canvasId, this.maximum, this.margin);
-
   }
 
   ngOnInit(): void {
-    let timer = Observable.timer(2000, 1000);
-    timer.subscribe(t => {
-      this.data = this.dataService.getRealData();
-      // this.data = this.dummyDataService.getDummyData();
-      if (this.lastDataSize != this.data.length) {
-        console.log('this is a redrawing');
-        this.chart.draw(this.data)
-        this.lastDataSize = this.data.length;
-      } else {
-        console.log('this is an updateing');
-        this.chart.update(this.data);
+    this.dataService.getDataObserable()
+      .subscribe(
+      data => {
+        $(".swiper-slide-active").css("background-color", "green");
+        this.data = data;
+        if (this.lastDataSize != this.data.length) {
+          console.log('this is a redrawing');
+          this.chart.draw(this.data)
+          this.lastDataSize = this.data.length;
+        } else {
+          console.log('this is an updateing');
+          this.chart.update(this.data);
+        }
+      },
+      error => {
+        $(".swiper-slide-active").css("background-color", "red");
       }
-    });
+      );
 
     window.addEventListener("resize", () => { this.chart.draw(this.data) });
   }
+
 }
