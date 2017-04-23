@@ -6,7 +6,6 @@ import { AboutPage } from "../pages/about/about";
 import { DataService } from "./data/data.service";
 import { DummyDataService } from "./data/dummy.data.service";
 import { HttpModule } from "@angular/http";
-import { WebSocketService } from "./websocket/websocket.service";
 
 @NgModule({
   declarations: [
@@ -25,7 +24,7 @@ import { WebSocketService } from "./websocket/websocket.service";
     TemperaturePage,
     AboutPage
   ],
-  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, DataService, DummyDataService, WebSocketService]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, DataService, DummyDataService]
 })
 export class AppModule {
 }
