@@ -6,7 +6,8 @@ import { Observable } from "rxjs/Rx";
 @Injectable()
 export class DataService {
 
-    private url: string = "http://192.168.2.6:8080/datapoints";
+    // private url: string = "http://192.168.2.6:8080/datapoints";
+    private url: string = "http://192.168.2.252:8080/datapoints";
     // private url: string = "http://localhost:8080/datapoints";
 
     constructor(private http: Http) {
